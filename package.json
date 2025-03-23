@@ -1,0 +1,23 @@
+{
+  "name": "aimanager_backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "moment": "^2.30.1",
+    "mongoose": "^8.12.2",
+    "node-cron": "^3.0.3",
+    "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1"
+  }
+}
