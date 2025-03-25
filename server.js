@@ -33,19 +33,19 @@ app.use("/api/users", userRoute);
 app.use("/api/schedule", chapterRoute);
 
 // Start Notification Cron Job
-cron.schedule("* * * * *", async () => {
-  console.log("🔄 Checking for upcoming events...");
-  const currentHour = moment().format("H:mm");
+// cron.schedule("* * * * *", async () => {
+//   console.log("🔄 Checking for upcoming events...");
+//   const currentHour = moment().format("H:mm");
 
-  const upcomingEvents = await Event.find({ time: currentHour });
-  upcomingEvents.forEach(async (event) => {
-    io.emit("receiveNotification", {
-      title: `Reminder: ${event.title}`,
-      message: `Your event '${event.title}' is starting now!`,
-    });
-    console.log(`📢 Notification sent for '${event.title}'`);
-  });
-});
+//   const upcomingEvents = await Event.find({ time: currentHour });
+//   upcomingEvents.forEach(async (event) => {
+//     io.emit("receiveNotification", {
+//       title: `Reminder: ${event.title}`,
+//       message: `Your event '${event.title}' is starting now!`,
+//     });
+//     console.log(`📢 Notification sent for '${event.title}'`);
+//   });
+// });
 
 // Start Server
 server.listen(5001, () => {
