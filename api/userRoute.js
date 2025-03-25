@@ -33,4 +33,20 @@ router.put("/:userId/addTask", async (req, res) => {
   }
 });
 
+router.put("/:userId/addeduinfo", async (req, res) => {
+  try {
+    const { school, grade } = req.body; // Receive school and grade
+    console.log(req.body);
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { school, grade }, // Directly update school and grade
+      { new: true }
+    );
+    console.log(user);
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update education info" });
+  }
+});
+
 export default router;
