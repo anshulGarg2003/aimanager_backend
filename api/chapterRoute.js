@@ -37,7 +37,7 @@ router.get("/chapter", async (req, res) => {
     const studyPlans = await ChapterPlan.find({ userId });
 
     if (!studyPlans.length) {
-      return res.status(404).json({ message: "No study plans found" });
+      return res.status(200).json({});
     }
 
     return res.status(200).json(studyPlans);
