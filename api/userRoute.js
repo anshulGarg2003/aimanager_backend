@@ -19,6 +19,16 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    let user = await User.find({}); // Use findOne() and await
+
+    res.status(200).json(user); // Return the user whether newly created or existing
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.put("/:userId/addTask", async (req, res) => {
   try {
     const { taskId } = req.body;

@@ -1,14 +1,30 @@
 import express from "express";
 import Event from "../model/event.js";
+import User from "../model/User.js";
 
 const router = express.Router();
 
 // Add an event
 router.post("/add-event", async (req, res) => {
   try {
+    const { userId } = req.body;
+
+    // Create and save the event
     const event = new Event(req.body);
     await event.save();
-    res.status(201).json({ message: "Event added successfully!" });
+
+    // Update the user document by pushing the event ID into their events array
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.tasks.push(event._id); // Push the event ID to the user's events array
+    await user.save();
+
+    res
+      .status(201)
+      .json({ message: "Event added and linked to user successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
