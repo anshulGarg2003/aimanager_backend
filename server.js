@@ -6,6 +6,7 @@ import eventRoute from "./api/eventRoute.js";
 import userRoute from "./api/userRoute.js";
 import chapterRoute from "./api/chapterRoute.js";
 import questionRoute from "./api/questionRoute.js";
+import mathsRoutes from "./api/MathRoute.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api", eventRoute);
 app.use("/api/users", userRoute);
 app.use("/api/schedule", chapterRoute);
 app.use("/api/questions", questionRoute);
+app.use("/api/maths", mathsRoutes);
 
 // Start Server
 server.listen(5001, () => {

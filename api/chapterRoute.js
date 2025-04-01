@@ -4,7 +4,7 @@ import ChapterPlan from "../model/ChapterPlanner.js";
 const router = express.Router();
 
 router.post("/chapter", async (req, res) => {
-  const { userId, subject, chapter, subtopics } = req.body;
+  const { userId, subject, chapter, subtopics, completeAt } = req.body;
   console.log(req.body);
 
   if (!userId || !subject || !chapter || !subtopics) {
@@ -12,7 +12,13 @@ router.post("/chapter", async (req, res) => {
   }
 
   try {
-    const newPlan = new ChapterPlan({ userId, subject, chapter, subtopics });
+    const newPlan = new ChapterPlan({
+      userId,
+      subject,
+      chapter,
+      subtopics,
+      completeAt,
+    });
     await newPlan.save();
 
     console.log(newPlan);
