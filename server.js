@@ -7,6 +7,7 @@ import userRoute from "./api/userRoute.js";
 import chapterRoute from "./api/chapterRoute.js";
 import questionRoute from "./api/questionRoute.js";
 import mathsRoutes from "./api/MathRoute.js";
+import physicsRoutes from "./api/PhysicsRoute.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -30,6 +31,7 @@ app.use("/api/users", userRoute);
 app.use("/api/schedule", chapterRoute);
 app.use("/api/questions", questionRoute);
 app.use("/api/maths", mathsRoutes);
+app.use("/api/physics", physicsRoutes);
 
 // Start Server
 server.listen(5001, () => {

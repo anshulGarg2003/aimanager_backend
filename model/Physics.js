@@ -1,23 +1,24 @@
 import mongoose from "mongoose";
 
 const subtopicSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  topic: { type: String, required: true },
   difficulty: {
     type: String,
     enum: ["easy", "medium", "hard"],
     required: true,
   },
-  durationMinutes: { type: Number, required: true },
-  questions: [{type: mongoose.Schema.Types.ObjectId, ref: "Question"}],
+  duration: { type: Number, required: true },
+  questions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }], // Embedded array of questions
 });
 
 const chapterSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  chapter: { type: String, required: true },
   overallDifficulty: {
     type: String,
     enum: ["easy", "medium", "hard"],
     required: true,
   },
+  grade: { type: String, required: true },
   subtopics: [subtopicSchema], // Embedded array of subtopics
 });
 

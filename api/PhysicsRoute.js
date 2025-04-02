@@ -1,13 +1,13 @@
 import express from "express";
-import Maths from "../model/Maths.js";
+import Physics from "../model/Physics.js";
 
 const router = express.Router();
 
 // ✅ Add a new chapter
 router.post("/add-chapter", async (req, res) => {
   try {
-    const newChapter = new Maths(req.body);
-    console.log(newChapter);
+    const newChapter = new Physics(req.body);
+    // console.log(newChapter);
     await newChapter.save();
     res
       .status(201)
@@ -20,7 +20,7 @@ router.post("/add-chapter", async (req, res) => {
 // ✅ Get all chapters
 router.get("/all-chapters", async (req, res) => {
   try {
-    const chapters = await Maths.find();
+    const chapters = await Physics.find();
     res.status(200).json(chapters);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,7 +30,7 @@ router.get("/all-chapters", async (req, res) => {
 // ✅ Get a chapter by ID
 router.get("/:id", async (req, res) => {
   try {
-    const chapter = await Maths.findById(req.params.id);
+    const chapter = await Physics.findById(req.params.id);
     if (!chapter) return res.status(404).json({ message: "Chapter not found" });
     res.status(200).json(chapter);
   } catch (error) {
@@ -41,7 +41,7 @@ router.get("/:id", async (req, res) => {
 // ✅ Update a chapter by ID
 router.put("/:id", async (req, res) => {
   try {
-    const updatedChapter = await Maths.findByIdAndUpdate(
+    const updatedChapter = await Physics.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true }
@@ -57,7 +57,7 @@ router.put("/:id", async (req, res) => {
 // ✅ Delete a chapter by ID
 router.delete("/:id", async (req, res) => {
   try {
-    await Maths.findByIdAndDelete(req.params.id);
+    await Physics.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Chapter deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
