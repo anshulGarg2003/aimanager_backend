@@ -9,6 +9,10 @@ router.post("/add-event", async (req, res) => {
   try {
     const { userId } = req.body;
 
+    if (!userId) {
+      return res.status(400).json({ error: "userId is required" });
+    }
+
     // Create and save the event
     const event = new Event(req.body);
     await event.save();
@@ -22,9 +26,42 @@ router.post("/add-event", async (req, res) => {
     user.tasks.push(event._id); // Push the event ID to the user's events array
     await user.save();
 
-    res
-      .status(201)
-      .json({ message: "Event added and linked to user successfully!" });
+    res.status(201).json({
+      message: "Event added and linked to user successfully!",
+      event,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get event by ID
+router.get("/events/:id", async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.json(event);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update event by ID
+router.put("/events/:id", async (req, res) => {
+  try {
+    const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.json({ message: "Event updated successfully", event: updatedEvent });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -66,7 +103,16 @@ router.get("/events", async (req, res) => {
 // Delete an event
 router.delete("/events/:id", async (req, res) => {
   try {
-    await Event.findByIdAndDelete(req.params.id);
+    const deleted = await Event.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    await User.findByIdAndUpdate(deleted.userId, {
+      $pull: { tasks: deleted._id },
+    });
+
     res.status(200).json({ message: "Event deleted successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });

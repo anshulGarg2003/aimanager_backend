@@ -59,4 +59,58 @@ router.put("/:userId/addeduinfo", async (req, res) => {
   }
 });
 
+router.put("/:userId/profile", async (req, res) => {
+  try {
+    const allowedFields = [
+      "name",
+      "picture",
+      "phone",
+      "bio",
+      "school",
+      "grade",
+      "subjects",
+      "department",
+      "qualification",
+      "yearsExperience",
+      "teacherCode",
+    ];
+
+    const updates = {};
+    for (const field of allowedFields) {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    if (typeof updates.name === "string") updates.name = updates.name.trim();
+    if (typeof updates.phone === "string") updates.phone = updates.phone.trim();
+    if (typeof updates.bio === "string") updates.bio = updates.bio.trim();
+    if (typeof updates.school === "string") updates.school = updates.school.trim();
+    if (typeof updates.grade === "string") updates.grade = updates.grade.trim();
+    if (typeof updates.department === "string") updates.department = updates.department.trim();
+    if (typeof updates.qualification === "string") updates.qualification = updates.qualification.trim();
+    if (typeof updates.teacherCode === "string") updates.teacherCode = updates.teacherCode.trim();
+
+    if (Array.isArray(updates.subjects)) {
+      updates.subjects = updates.subjects
+        .map((value) => (typeof value === "string" ? value.trim() : ""))
+        .filter(Boolean);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(updates, "yearsExperience")) {
+      const parsedYears = Number(updates.yearsExperience);
+      updates.yearsExperience = Number.isFinite(parsedYears) && parsedYears >= 0 ? parsedYears : 0;
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.userId, updates, { new: true });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
 export default router;

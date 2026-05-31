@@ -39,4 +39,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Delete a question
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleted = await Question.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ error: "Question not found" });
+    }
+
+    res.status(200).json({ message: "Question deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete question" });
+  }
+});
+
 export default router;
